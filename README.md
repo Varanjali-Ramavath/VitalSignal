@@ -1,14 +1,13 @@
-# 💊 VitalSignal
+# VitalSignal
 
-An LLM-powered Streamlit app that turns unstructured patient reviews and
-consumer product complaints into structured insight: **sentiment**, **key
-issue extraction**, an auto-generated dashboard, and free-text **Q&A** over
-the review corpus.
+An LLM-powered Streamlit app that turns any unstructured text feedback —
+reviews, complaints, survey responses, support tickets — into structured
+insight: **sentiment**, **key issue extraction**, an auto-generated
+dashboard, and free-text **Q&A** over the corpus.
 
-Built to mirror a real analyst workflow — e.g. triaging drug side-effect
-reports or CPG product complaints — where the raw input is a pile of free
-text and the deliverable is "what are people actually saying, and how bad
-is it."
+Built to mirror a real analyst workflow across any domain (pharma, CPG,
+SaaS, hospitality, etc.) where the raw input is a pile of free text and the
+deliverable is "what are people actually saying, and how bad is it."
 
 ## Features
 
@@ -86,9 +85,9 @@ commented:
 
 ## Sample data
 
-[`sample_reviews.txt`](sample_reviews.txt) contains 15 mock pharma/CPG
-reviews (side effects, packaging complaints, positive product feedback)
-ready to upload and test.
+[`sample_reviews.txt`](sample_reviews.txt) contains 15 mock reviews across
+a few domains (side effects, packaging complaints, positive product
+feedback) ready to upload and test.
 
 ## Project structure
 
@@ -107,6 +106,6 @@ sample_reviews.txt      # mock test data
   in-session caching so re-rendering the page doesn't re-bill the API).
 - The mock classifier is keyword-based, not semantic — it's a reliability
   fallback, not a substitute for the LLM path.
-- Uses synthetic mock review data. A real deployment on patient data would
-  need de-identification and a compliant hosting setup before any text
-  reaches a third-party LLM API.
+- Uses synthetic mock review data. A real deployment on sensitive data
+  (e.g. patient records) would need de-identification and a compliant
+  hosting setup before any text reaches a third-party LLM API.
