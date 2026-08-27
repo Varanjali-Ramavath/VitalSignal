@@ -1,10 +1,10 @@
 """
 VitalSignal
 --------------------------------------
-A Streamlit app that ingests unstructured customer/patient reviews
-(drug side-effect reports, CPG product complaints, etc.), uses an LLM
-to classify each review by Sentiment + Key Issue, then renders a
-dashboard and answers free-text questions about the review corpus.
+A Streamlit app that ingests unstructured text feedback (reviews,
+complaints, survey responses, support tickets, etc.), uses an LLM
+to classify each entry by Sentiment + Key Issue, then renders a
+dashboard and answers free-text questions about the corpus.
 
 Supports three LLM backends, auto-selected in this order:
   1. OpenAI (if OPENAI_API_KEY is set)
@@ -67,8 +67,8 @@ st.sidebar.caption(f"Active backend: **{ACTIVE_BACKEND.upper()}**")
 # The prompt is the same regardless of backend -- this is the "prompt
 # engineering" artifact you'd walk an interviewer through. We ask for
 # strict JSON so the app can parse the LLM's answer deterministically.
-CLASSIFICATION_PROMPT_TEMPLATE = """You are an assistant that analyzes a single customer/patient review
-for a pharmaceutical or consumer packaged goods (CPG) company.
+CLASSIFICATION_PROMPT_TEMPLATE = """You are an assistant that analyzes a single piece of unstructured
+customer feedback (a review, complaint, survey response, or support ticket).
 
 Review:
 \"\"\"{review_text}\"\"\"
@@ -194,11 +194,16 @@ _NEGATIVE_WORDS = {
     "moldy", "expired", "stale", "awful", "terrible", "worst", "bad",
     "disappointed", "complaint", "itchy", "burning", "allergic", "sick",
     "cramps", "diarrhea", "bloating", "rancid", "spoiled", "defective",
+    "bug", "crash", "glitch", "slow", "laggy", "downtime", "outage",
+    "rude", "unresponsive", "overpriced", "refund", "cancelled",
+    "delayed", "confusing", "unreliable", "dirty", "noisy",
 }
 _POSITIVE_WORDS = {
     "great", "excellent", "effective", "relief", "happy", "love",
     "amazing", "works", "improved", "fresh", "delicious", "satisfied",
     "recommend", "wonderful", "best", "helped", "smooth", "gentle",
+    "fast", "reliable", "intuitive", "friendly", "responsive",
+    "seamless", "affordable", "clean", "comfortable", "helpful",
 }
 
 
@@ -279,8 +284,8 @@ def _parse_llm_json(raw_text: str) -> dict:
 # This still demonstrates the core RAG idea: ground the LLM's answer in
 # retrieved documents instead of letting it hallucinate from training data.
 
-QA_PROMPT_TEMPLATE = """You are analyzing consumer/patient reviews for a pharma or CPG product.
-Below is the full set of reviews, each already tagged with a sentiment
+QA_PROMPT_TEMPLATE = """You are analyzing a corpus of unstructured customer feedback.
+Below is the full set of entries, each already tagged with a sentiment
 and key issue extracted by an earlier analysis step.
 
 Reviews:
@@ -396,11 +401,11 @@ st.markdown(
     }
     </style>
     <div class="hero">
-        <div class="hero-badge">GenAI &middot; Pharma &amp; CPG Analytics</div>
+        <div class="hero-badge">GenAI &middot; Feedback Analytics</div>
         <h1>💊 VitalSignal</h1>
-        <p>Upload patient reviews or product complaints and let an LLM surface
-        sentiment, key issues, and instant answers &mdash; turning unstructured
-        text into a live insights dashboard.</p>
+        <p>Upload reviews, complaints, or survey responses from any domain and
+        let an LLM surface sentiment, key issues, and instant answers &mdash;
+        turning unstructured text into a live insights dashboard.</p>
     </div>
     """,
     unsafe_allow_html=True,
